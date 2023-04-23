@@ -27,7 +27,7 @@
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
-                 style="width:7rem; height:6.3rem; !important">
+                 style="width:5rem; height:5rem; !important">
         </a>
     </div>
     <div class="navbar-menu">
@@ -44,12 +44,14 @@
         </div>
     </div>
 </nav>
-
-<div class="m-6">
-    <h1 class="title">Type in your join code below</h1>
-    <input class="input" type="text" id="code" placeholder="ABC123">
-    <p class="is-danger" style="display: none;" id="invalid">This join code is invalid</p>
-    <button class="button is-link" onclick="send();">Submit</button>
+<h1 class="title m-6">Type in your join code below</h1>
+<div class="m-6 columns">
+    <div class="column is-one-third">
+        <input class="input" type="text" id="code" placeholder="ABC123">
+        <p class="is-danger" style="display: none;" id="invalid">This join code is invalid</p>
+        <p><br></p>
+        <button class="button is-link" onclick="send();">Submit</button>
+    </div>
 </div>
 </body>
 </html>

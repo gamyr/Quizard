@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Quizard | Your code is {{ code }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quizard | Home</title>
 </head>
 <body>
 <nav class="navbar is-primary" role="navigation" aria-label="main navigation" style="height: 6rem !important">
@@ -28,10 +27,9 @@
         </div>
     </div>
 </nav>
-<div class="m-6">
-    <img src="{{ url_for('static', filename=quizard.png) }}"
-    <p>What if you could both tutor students and quiz them - all without lifting a finger? You can with Quizard! To get started, click on Create a Quiz. If you want to join a room, click on Join a Quiz.</p>
+<div class="control m-6">
+    <h1 class="title">Join code for Quizard Room</h1>
+    <h1 class="title is-1">{{ code }}</h1>
 </div>
-
 </body>
 </html>

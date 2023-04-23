@@ -11,7 +11,7 @@
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
-                 style="width:7rem; height:6.3rem; !important">
+                 style="width:5rem; height:5rem; !important">
         </a>
     </div>
     <div class="navbar-menu">
@@ -30,13 +30,56 @@
 </nav>
 <script>
     function addQuiz() {
-        let text = document.getElementById("quiz")
-        try {
-            text = text.innerText.split("\n")
-            obj = {}
-        } catch (err) {
-            document.getElementById("invalid").style.display = "block";
-            document.getElementById("quiz").className = "textarea is-danger";
+        let input = document.getElementById("quiz").value;
+        const lines = input.split('\n');
+
+        const questions = {};
+        let questionNumber = 1;
+        const code = generateCode();
+        for (let i = 0; i < lines.length; i += 6) {
+            const question = {};
+            question.value = lines[i];
+            question.a = lines[i + 1];
+            question.b = lines[i + 2];
+            question.c = lines[i + 3];
+            question.d = lines[i + 4];
+            question.correct = lines[i + 5][0].toLowerCase();
+            questions[`question${questionNumber}`] = question;
+            questionNumber++;
+        }
+
+        const data = {};
+        data[code] = questions;
+
+        const jsonData = JSON.stringify(data);
+
+        fetch('/addroom', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        window.location = "/display/"+code
+
+        function generateCode() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const digits = '0123456789';
+            let code = '';
+            for (let i = 0; i < 3; i++) {
+                code += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            for (let i = 0; i < 3; i++) {
+                code += digits.charAt(Math.floor(Math.random() * digits.length));
+            }
+            return code;
         }
     }
 </script>
@@ -45,18 +88,17 @@
     <h1 class="title">Quiz Creator</h1>
 
     <p>
-        This is the quiz creation page. When you write your questions into the input, keep them in a format like this and make sure to press Enter twice after you
-        type your last choice:<br><br>Question content<br>Choice A<br>Choice B<br>Choice C<br>Choice D<br>A is correct<br><br>
+        This is the quiz creation page. When you write your questions into the input, keep them in a format like
+        this::<br><br>Question content<br>Choice A<br>Choice B<br>Choice C<br>Choice D<br>A is correct<br><br>
 
-        Keep in mind that you need four choices per question. You can type your questions below.<br><br>
+        Keep in mind that you need four choices per question, and you should only press Enter once per line. You can type your questions below.<br><br>
     </p>
-    <form action="{{ url_for("create") }}" method="post">
     <textarea class="textarea" id="quiz"
-              placeholder="What is the third stage of mitosis?&#10;Telophase&#10;Prophase&#10;Anaphase&#10;Metaphase&#10;C is correct&#10;&#10;Next question"
-              rows="32"></textarea>
-    <p id="invalid" class="is-danger" style="display: none;">The quiz is invalid. Try checking your formatting.</p>
+              placeholder="What is the third stage of mitosis?&#10;Telophase&#10;Prophase&#10;Anaphase&#10;Metaphase&#10;C is correct&#10;Next question"
+              rows="16"></textarea>
+    <p id="invalid" class="is-danger" style="display: none;">The quiz is invalid. Try checking your formatting and
+        making sure each question has 4 choices without extra line breaks.</p>
     <button class="button" onclick="addQuiz();">Submit</button>
-    </form>
 </div>
 </body>
 </html>

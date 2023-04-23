@@ -1,4 +1,4 @@
-import openai
+import json
 from flask import Flask, request, render_template
 import os
 
@@ -15,6 +15,21 @@ def quiz(code):
 @app.route("/create")
 def create():
     return render_template("create.html")
+
+@app.route("/display/<code>")
+def display(code):
+    return render_template("displaycode.html", code=code)
+
+@app.route("/addroom", methods=['POST'])
+def addroom():
+    data = json.loads(request.data)
+    path = "static/rooms.json"
+    with open(path) as f:
+        roomdata = json.load(f)
+    roomdata.update(data)
+    with open(path, 'w') as f:
+        json.dump(roomdata, f)
+    return 'cool'
 
 @app.route("/join")
 def join():
