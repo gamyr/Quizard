@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quizard | Join a quiz</title>
+</head>
+<body>
+<script>
+    function send() {
+        let code = document.getElementById("code").value;
+        var obj;
+        fetch("{{ url_for('static', filename='rooms.json') }}")
+            .then((response) => response.json())
+            .then((obj) => {
+                if (obj.hasOwnProperty(code)) {
+                    window.location.href = "/student/" + code;
+                } else {
+                    document.getElementById("invalid").style.display = "block";
+                    document.getElementById("code").className = "input is-danger";
+                }
+            });
+    }
+</script>
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation" style="height: 6rem !important">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
+                 style="width:7rem; height:6.3rem; !important">
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+            <a class="navbar-item" href="/create">
+                Create a Quiz Room
+            </a>
+            <a class="navbar-item" href="/join">
+                Join a Quiz
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="m-6">
+    <h1 class="title">Type in your join code below</h1>
+    <input class="input" type="text" id="code" placeholder="ABC123">
+    <p class="is-danger" style="display: none;" id="invalid">This join code is invalid</p>
+    <button class="button is-link" onclick="send();">Submit</button>
+</div>
+</body>
+</html>

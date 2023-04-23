@@ -1,0 +1,20 @@
+{
+  "code": {
+    "question1": {
+      "value": "What is the first phase of cell division?",
+      "a": "Metaphase",
+      "b": "Prophase",
+      "c": "Telophase",
+      "d": "Anaphase",
+      "correct": "b"
+    },
+    "question2": {
+      "value": "What is the second phase of cell division?",
+      "a": "Metaphase",
+      "b": "Prophase",
+      "c": "Telophase",
+      "d": "Anaphase",
+      "correct": "a"
+    }
+  }
+}

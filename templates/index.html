@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quizard | Home</title>
+</head>
+<body>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation" style="height: 6rem !important">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
+                 style="width:7rem; height:6.3rem; !important">
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+            <a class="navbar-item" href="/create">
+                Create a Quiz Room
+            </a>
+            <a class="navbar-item" href="/join">
+                Join a Quiz
+            </a>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

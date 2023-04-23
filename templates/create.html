@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quizard | Teacher Dashboard</title>
+</head>
+<body>
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation" style="height: 6rem !important">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
+                 style="width:7rem; height:6.3rem; !important">
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+            <a class="navbar-item" href="/create">
+                Create a Quiz Room
+            </a>
+            <a class="navbar-item" href="/join">
+                Join a Quiz
+            </a>
+        </div>
+    </div>
+</nav>
+<script>
+    function addQuiz() {
+        let text = document.getElementById("quiz")
+        try {
+            text = text.innerText.split("\n")
+            obj = {}
+        } catch (err) {
+            document.getElementById("invalid").style.display = "block";
+            document.getElementById("quiz").className = "textarea is-danger";
+        }
+    }
+</script>
+<div class="control m-6">
+
+    <h1 class="title">Quiz Creator</h1>
+
+    <p>
+        This is the quiz creation page. When you write your questions into the input, keep them in a format like this and make sure to press Enter twice after you
+        type your last choice:<br><br>Question content<br>Choice A<br>Choice B<br>Choice C<br>Choice D<br>A is correct<br><br>
+
+        Keep in mind that you need four choices per question. You can type your questions below.<br><br>
+    </p>
+    <form action="{{ url_for("create") }}" method="post">
+    <textarea class="textarea" id="quiz"
+              placeholder="What is the third stage of mitosis?&#10;Telophase&#10;Prophase&#10;Anaphase&#10;Metaphase&#10;C is correct&#10;&#10;Next question"
+              rows="32"></textarea>
+    <p id="invalid" class="is-danger" style="display: none;">The quiz is invalid. Try checking your formatting.</p>
+    <button class="button" onclick="addQuiz();">Submit</button>
+    </form>
+</div>
+</body>
+</html>

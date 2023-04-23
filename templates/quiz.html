@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quizard | Student Quiz</title>
+</head>
+<body>
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation" style="height: 6rem !important">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"
+                 style="width:7rem; height:6.3rem; !important">
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Home
+            </a>
+            <a class="navbar-item" href="/create">
+                Create a Quiz Room
+            </a>
+            <a class="navbar-item" href="/join">
+                Join a Quiz
+            </a>
+        </div>
+    </div>
+</nav>
+<script>
+    let code = "{{code}}";
+    var obj;
+    fetch("{{ url_for('static', filename='rooms.json') }}")
+        .then((response) => response.json())
+        .then((json) => {
+            obj = json[code];
+            loadQuestion(0);
+        })
+    function loadQuestion(qi) {
+        qi = eval("obj.question" + String(qi + 1))
+        document.getElementById("question").innerHTML = qi.value;
+        document.getElementById("a").getElementsByTagName("span")[0].innerHTML = qi.a;
+        document.getElementById("b").getElementsByTagName("span")[0].innerHTML = qi.b;
+        document.getElementById("c").getElementsByTagName("span")[0].innerHTML = qi.c;
+        document.getElementById("d").getElementsByTagName("span")[0].innerHTML = qi.d;
+        document.getElementsByName("answer").forEach(function (answer) {
+            answer.checked = false;
+        });
+    }
+
+    function next() {
+        let radios = document.getElementsByName('answer');
+        let selected = null;
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                selected = radios[i].parentNode.id;
+                break;
+            }
+        }
+        if (selected === null) {
+            alert('Please select an answer');
+            return;
+        }
+        let questionIndex = getCurrentQuestionIndex();
+        if (questionIndex !== undefined && questionIndex < Object.keys(obj).length) {
+            let question = eval("obj.question" + String(questionIndex+1));
+            if (question.correct === selected) {
+                if (questionIndex === Object.keys(obj).length - 1) {
+                    alert('Quiz finished! You got a perfect score!');
+                    return;
+                }
+                loadQuestion(questionIndex + 1);
+            } else {
+                let questionContent = encodeURIComponent(question.value);
+                let selectedContent = encodeURIComponent(document.getElementById(selected).innerText);
+                let correctContent = encodeURIComponent(eval("question." + question.correct));
+                let url = `/help/${questionContent}/${selectedContent}/${correctContent}`;
+                window.open(url, '_blank');
+            }
+        } else {
+            console.error('invalid index:', questionIndex);
+        }
+    }
+
+
+    function getCurrentQuestionIndex() {
+        let q = document.getElementById('question').innerText;
+        for (let i = 0; i < Object.keys(obj).length; i++) {
+            let a = eval("obj.question" + String(i+1))
+            console.log(obj.question1)
+            console.log(a.value)
+            if (a.value === q) {
+                return i;
+            }
+        }
+    }
+
+</script>
+<div class="control m-6">
+    <h1 class="title">Quiz</h1>
+    <p id="question"></p>
+    <div class="control">
+        <label class="radio" id="a">
+            <input type="radio" name="answer">
+            <span/>
+        </label>
+        <br>
+        <label class="radio" id="b">
+            <input type="radio" name="answer">
+            <span/>
+        </label>
+        <br>
+        <label class="radio" id="c">
+            <input type="radio" name="answer">
+            <span/>
+        </label>
+        <br>
+        <label class="radio" id="d">
+            <input type="radio" name="answer">
+            <span/>
+        </label>
+    </div>
+    <button id="qsubmit" onclick="next()">Submit</button>
+</div>
+
+</body>
+</html>
